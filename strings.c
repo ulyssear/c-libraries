@@ -166,3 +166,20 @@ int strequals(char * a, char * b) {
   }
   return 0;
 }
+
+char * substr(char * str, int start, int end) {
+  char * nstr = string();
+  int i, l = strsize(str), j;
+  if (end < start) {
+    i = start;
+    start = end;
+    end = i;
+  }
+  if (end > l) end = l;
+  if (start > l) start = l;
+  i = start - 1;
+  while (end - 1 > i++) {
+    nstr = append_char(nstr, & j, str[i]);
+  }
+  return nstr;
+}

@@ -133,6 +133,18 @@ void test_strequals() {
   assert(strequals("a", "b") == 1);
 }
 
+void test_substr() {
+  char * str = string();
+  str = concat_str(str, "abc");
+  str = substr(str, 1, 2);
+  int size = strsize(str);
+  assert(str[0] == 'b');
+  assert(str[1] == 'c');
+  assert(str[2] == 0);
+  assert(size == 2);
+  free(str);
+}
+
 int main() {
   test_charstring();
   test_string();
@@ -147,5 +159,6 @@ int main() {
   test_rsubstr();
   test_lsubstr();
   test_strequals();
+  test_substr();
   return 0;
 }
