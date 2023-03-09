@@ -29,6 +29,16 @@ void test_append_char() {
   free(str);
 }
 
+void test_prepend_char() {
+  char * str = string();
+  int size = 0;
+  str = prepend_char(str, & size, 'a');
+  assert(str[0] == 'a');
+  assert(str[1] == 0);
+  assert(size == 1);
+  free(str);
+}
+
 void test_concat_str() {
   char * str = string();
   int size = 0;
