@@ -13,8 +13,9 @@ char * string() {
   return s;
 }
 
-unsigned char * charstring() {
+unsigned char * charstring(int c) {
   unsigned char * s = malloc(2);
+  s[0] = c;
   s[1] = 0;
   return s;
 }
@@ -41,17 +42,23 @@ char * concat_str(char * left, char * right) {
 }
 
 char * append_char(char * str, int * size, char to_append) {
-  char * cs = charstring();
-  cs[0] = to_append;
+  char * cs = charstring(to_append);
   str = concat_str(str, cs);
-  ( * size) = ( * size + 1);
+  ( * size) = ( * size) + 1;
+  return str;
+}
+
+char * prepend_char(char * str, int * size, char to_prepend) {
+  char * cs = charstring(to_prepend);
+  str = concat_str(cs, str);
+  ( * size) = ( * size) + 1;
   return str;
 }
 
 char * pad_left(int base, char * str, int * size) {
   int b, i;
   if ((b = * size % base)) {
-    i = b;
+    i = b - 1;
     while (-1 < i--) str = concat_str("0", str);
     ( * size) = strsize(str);
   }
@@ -72,33 +79,34 @@ char * pad_right(int base, char * str, int * size) {
 }
 
 char * replace_all(char * origin, char * search, char * replacement, int * str_size) {
-  int size = * str_size,
-    i, c, a = 0, j, k,
-    size_search = strsize(search),
-    size_r = strsize(replacement);
+  int limit = 1000, a = 0, b = 0, i, not_done = 1, search_size = strsize(search), replacement_size = strsize(replacement);
+  char * nstr = string(), c;
 
-  char * str = string();
-  for (i = 0; size > i; i++) {
-    for (j = 0; size_search > j; j++)
-      if (search[j] != origin[i + j]) break;
-
-    if (j != size_search) {
-      a++;
-      str = append_char(str, & a, origin[i]);
+  while (0 < (c = origin[a++])) {
+    if (0 > limit--) break;
+    if (c == search[b]) {
+      if (search_size == b + 1) {
+        nstr = concat_str(nstr, replacement);
+        ( * str_size) += replacement_size;
+        b = 0;
+        continue;
+      }
+      b++;
       continue;
     }
-
-    for (k = 0; size_r > k; k++) {
-      a++;
-      str = append_char(str, & a, replacement[a]);
+    if (0 < not_done) not_done = 0;
+    if (0 < b) {
+      for (i = 0; b > i; i++) {
+        nstr = append_char(nstr, str_size, search[i]);
+        ( * str_size) ++;
+      }
+      b = 0;
     }
-
-    i += size_search - 1;
+    nstr = append_char(nstr, str_size, c);
+    ( * str_size) ++;
   }
 
-  ( * str_size) = a;
-
-  return str;
+  return nstr;
 }
 
 char * ltrim(char * str, int * size) {
@@ -110,36 +118,30 @@ char * ltrim(char * str, int * size) {
     if (0 < not_done) not_done = 0;
     nstr = append_char(nstr, & b, c);
   }
+  ( * size) = strsize(nstr);
   return nstr;
 }
 
 char * rtrim(char * str, int * size) {
-  int limit = 500, a = * size, b = 0, i, not_done = 1;
-  char * nstr = string(), c,
-    * sub_str = charstring();
-
-  while (0 < a) {
-    c = str[--a];
+  int a = * size, b = 0, i, not_done = 1, limit = a;
+  char * nstr = string(), c;
+  while (0 < a--) {
     if (0 > limit--) break;
-    if (' ' == c && not_done) continue;
+    if (' ' == str[a] && not_done) continue;
     if (0 < not_done) not_done = 0;
-    sub_str[0] = c;
-    nstr = concat_str(sub_str, nstr);
+    nstr = prepend_char(nstr, size, str[a]);
   }
-
   ( * size) = strsize(nstr);
   return nstr;
 }
 
 char * rsubstr(char * str, int size) {
-  char * s_c = charstring(), * nstr = string();
+  char * s_c = charstring(0), * nstr = string();
   int i, l = strsize(str);
   if (l < size) size = l;
   for (i = size - 1; - 1 < i; i--) {
-    s_c[0] = str[i + 1];
-    nstr = concat_str(s_c, nstr);
+    nstr = prepend_char(nstr, & l, str[i + 1]);
   }
-
   return nstr;
 }
 
@@ -147,9 +149,9 @@ char * lsubstr(char * str, int size) {
   char * nstr = string();
   int i, l = strsize(str), j;
   if ((l - size) < 1) size = l;
-  i = 0;
+  i = -1;
   while (size - 1 > i++) {
-    nstr = append_char(nstr, & j, str[i + 1]);
+    nstr = append_char(nstr, & j, str[i]);
   }
   return nstr;
 }
