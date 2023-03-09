@@ -1,3 +1,5 @@
+#include "strings.c"
+
 char * fileread(char * filename, int * size) {
   FILE * file;
   file = fopen(filename, "r");
@@ -11,4 +13,26 @@ char * fileread(char * filename, int * size) {
   }
   ( * size) = i;
   return content;
+}
+
+void filewrite(char * filename, char * content, int * size) {
+  FILE * file;
+  file = fopen(filename, "w");
+  if (!file) {
+    exit(-1);
+  }
+  int i = -1, l = * size;
+  while ( * size > i++) {
+    fputc(content[i], file);
+    l++;
+  }
+  fclose(file);
+  * size = l;
+}
+
+void printfile(char * filename) {
+  int size;
+  char * content = fileread(filename, & size);
+  printstr(content);
+  free(content);
 }
