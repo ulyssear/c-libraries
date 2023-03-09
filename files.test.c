@@ -1,5 +1,5 @@
 #include <assert.h>
-#include "file.c"
+#include "files.c"
 
 void test_fileread() {
   char * filename = "example.txt";
