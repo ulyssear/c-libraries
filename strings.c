@@ -1,4 +1,5 @@
 #include <stdlib.h>
+
 #include <stdio.h>
 
 int strsize(char * str) {
@@ -13,15 +14,15 @@ char * string() {
   return s;
 }
 
-unsigned char * charstring(int c) {
-  unsigned char * s = malloc(2);
+char * charstring(int c) {
+  char * s = malloc(2);
   s[0] = c;
   s[1] = 0;
   return s;
 }
 
 void printstr(char * str) {
-  int a, size = strsize(str);
+  int size = strsize(str);
   for (int i = 0; size > i; i++) printf("%c", str[i]);
   printf("\n");
 }
@@ -55,27 +56,54 @@ char * prepend_char(char * str, int * size, char to_prepend) {
   return str;
 }
 
-char * pad_left(int base, char * str, int * size) {
-  int b, i;
-  if ((b = * size % base)) {
-    i = b - 1;
-    while (-1 < i--) str = concat_str("0", str);
-    ( * size) = strsize(str);
+char * reverse_str(char * str) {
+  char * nstr = string();
+  int i, l = strsize(str), j;
+  i = -1;
+  while (l - 1 > i++) {
+    nstr = prepend_char(nstr, & j, str[i]);
   }
+  return nstr;
+}
 
+char * i2s(int i) {
+  char * str = string();
+  int size = 0, limit = 1000;
+  if (0 == i) return charstring('0');
+  if (0 > i) {
+    str = append_char(str, & size, '-');
+    i = -i;
+  }
+  while (0 < i) {
+    if (0 > limit--) break;
+    str = prepend_char(str, & size, (i % 10) + '0');
+    i /= 10;
+  }
   return str;
 }
 
-char * pad_right(int base, char * str, int * size) {
-  int b, i, l;
-  if ((b = * size % base)) {
-    l = b;
-    i = 0;
-    while (l > i++) str = concat_str(str, "0");
-    ( * size) = strsize(str);
+char * pad_left(int base, char * str, int * size) {
+  int i, l = strsize(str), limit = 1000;
+  char * nstr = string();
+  for (i = 0; base > l + i; i++) {
+    if (0 > limit--) break;
+    nstr = append_char(nstr, & l, '0');
   }
+  nstr = concat_str(nstr, str);
+  ( * size) = strsize(nstr);
+  return nstr;
+}
 
-  return str;
+char * pad_right(int base, char * str, int * size) {
+  int i, l = strsize(str), limit = 1000;
+  char * nstr = string();
+  for (i = 0; base > l + i; i++) {
+    if (0 > limit--) break;
+    nstr = append_char(nstr, & l, '0');
+  }
+  nstr = concat_str(str, nstr);
+  ( * size) = strsize(nstr);
+  return nstr;
 }
 
 char * replace_all(char * origin, char * search, char * replacement, int * str_size) {
@@ -110,7 +138,7 @@ char * replace_all(char * origin, char * search, char * replacement, int * str_s
 }
 
 char * ltrim(char * str, int * size) {
-  int limit = 500, a = -1, b = 0, i, not_done = 1;
+  int limit = 500, a = -1, b = 0, not_done = 1;
   char * nstr = string(), c;
   while (0 < (c = str[++a])) {
     if (0 > limit--) break;
@@ -123,8 +151,8 @@ char * ltrim(char * str, int * size) {
 }
 
 char * rtrim(char * str, int * size) {
-  int a = * size, b = 0, i, not_done = 1, limit = a;
-  char * nstr = string(), c;
+  int a = * size, not_done = 1, limit = a;
+  char * nstr = string();
   while (0 < a--) {
     if (0 > limit--) break;
     if (' ' == str[a] && not_done) continue;
@@ -136,7 +164,7 @@ char * rtrim(char * str, int * size) {
 }
 
 char * rsubstr(char * str, int size) {
-  char * s_c = charstring(0), * nstr = string();
+  char * nstr = string();
   int i, l = strsize(str);
   if (l < size) size = l;
   for (i = size - 1; - 1 < i; i--) {
@@ -182,4 +210,19 @@ char * substr(char * str, int start, int end) {
     nstr = append_char(nstr, & j, str[i]);
   }
   return nstr;
+}
+
+char * strswap(char * str, int a, int b) {
+  str[a] = str[a] ^ str[b];
+  str[b] = str[a] ^ str[b];
+  str[a] = str[a] ^ str[b];
+  return str;
+}
+
+char * strreverse(char * str, int * size) {
+  int i = -1, l = * size;
+  while (l - 1 > i++) {
+    str = strswap(str, i, l - 1 - i);
+  }
+  return str;
 }

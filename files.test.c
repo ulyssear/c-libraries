@@ -1,4 +1,5 @@
 #include <assert.h>
+
 #include "files.c"
 
 void test_fileread() {
@@ -19,7 +20,7 @@ void test_filewrite() {
   filewrite(filename, expected, & size);
   content = fileread(filename, & size);
   content = lsubstr(content, 15);
-  assert(strequals(content, "Hello, world !"));
+  assert(0 == strequals(content, "Hello, world !"));
 }
 
 void test_printfile() {

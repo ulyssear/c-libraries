@@ -1,8 +1,9 @@
 #include <assert.h>
+
 #include "strings.c"
 
 void test_charstring() {
-  unsigned char * str = charstring(0);
+  char * str = charstring(0);
   assert(str[0] == 0);
   free(str);
 }
@@ -41,7 +42,6 @@ void test_prepend_char() {
 
 void test_concat_str() {
   char * str = string();
-  int size = 0;
   str = concat_str(str, "a");
   assert(str[0] == 'a');
   assert(str[1] == 0);
@@ -49,14 +49,14 @@ void test_concat_str() {
 }
 
 void test_pad_left() {
-  char * str = string();
+  char * str = "65";
   int size = 0;
-  str = append_char(str, & size, 'a');
-  str = pad_left(2, str, & size);
+  str = pad_left(3, str, & size);
   assert(str[0] == '0');
-  assert(str[1] == 'a');
-  assert(str[2] == 0);
-  assert(size == 2);
+  assert(str[1] == '6');
+  assert(str[2] == '5');
+  assert(str[3] == 0);
+  assert(size == 3);
   free(str);
 }
 
@@ -135,14 +135,19 @@ void test_strequals() {
 
 void test_substr() {
   char * str = string();
-  str = concat_str(str, "abc");
-  str = substr(str, 1, 2);
+  str = concat_str(str, "abcd");
+  str = substr(str, 1, 3);
   int size = strsize(str);
   assert(str[0] == 'b');
   assert(str[1] == 'c');
   assert(str[2] == 0);
   assert(size == 2);
   free(str);
+}
+
+void test_i2s() {
+  assert(strequals(i2s(42), "42") == 0);
+  assert(strequals(i2s(-42), "-42") == 0);
 }
 
 int main() {

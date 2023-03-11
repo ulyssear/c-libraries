@@ -1,32 +1,24 @@
 #include "strings.c"
 
-char * byte() {
-  char * bs = malloc(9);
-  int i, l = 9;
-  for (i = 0; l > i; i++) bs[i] = 0;
-  return bs;
-}
-
 char * int2bs(int i) {
-  char * bs = byte();
+  char * bs = string();
   int j = 0;
   while (i > 0) {
-    bs[j] = ((i % 2) ? 1 : 0) + '0';
-    i = i / 2;
-    j++;
+    bs = append_char(bs, & j, '0' + (i % 2));
+    i /= 2;
   }
   return pad_left(8, bs, & j);
 }
 
 char * s2bs(char * s) {
   int size = strsize(s);
-  char * bs = string(), * bs2, * ch = charstring(0);
+  char * bs = string(), * bs2;
   for (int i = 0; i < size; i++) {
-    ch[0] = s[i];
     bs2 = int2bs(s[i]);
     bs = concat_str(bs, bs2);
   }
-  return bs;
+  size = strsize(s);
+  return pad_left(8, bs, & size);
 }
 
 char bs2c(char * bs) {
@@ -42,7 +34,7 @@ char bs2c(char * bs) {
 
 char * bs2s(char * bs, int base) {
   int size = strsize(bs);
-  int i, j, k, l = 0;
+  int i;
   char * s = string();
   char * ch = charstring(0);
   for (i = 0; i < size; i += base) {
