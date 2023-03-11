@@ -232,7 +232,7 @@ char * strreverse(char * str, int * size) {
   return str;
 }
 
-char * strlindex (char * str, char * search) {
+int strlindex (char * str, char * search) {
   int i = -1, l = strsize(str), j = 0, sl = strsize(search);
   while (l > i++) {
     if (str[i] == search[j]) {
@@ -247,7 +247,7 @@ char * strlindex (char * str, char * search) {
   return -1;
 }
 
-char * strrindex (char * str, char * search) {
+int strrindex (char * str, char * search) {
   int i = strsize(str), j = strsize(search);
   while (0 < i--) {
     if (str[i] == search[j]) {

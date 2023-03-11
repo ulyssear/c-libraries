@@ -175,14 +175,14 @@ void test_strreverse() {
 void test_strlindex() {
   char * str = "Hello World";
   char * search = "World";
-  char * index = strindex(str, search);
+  int index = strlindex(str, search);
   assert(index == 6);
 }
 
 void test_strrindex() {
   char * str = "Hello World World";
   char * search = "World";
-  char * index = strrindex(str, search);
+  int index = strrindex(str, search);
   assert(index == 12);
 }
 
