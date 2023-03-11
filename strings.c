@@ -162,6 +162,12 @@ char * rtrim(char * str, int * size) {
   return nstr;
 }
 
+char * trim(char * str, int * size) {
+  str = ltrim(str, size);
+  str = rtrim(str, size);
+  return str;
+}
+
 char * rsubstr(char * str, int size) {
   char * nstr = string();
   int i, l = strsize(str);
@@ -224,4 +230,34 @@ char * strreverse(char * str, int * size) {
     str = strswap(str, i, l - 1 - i);
   }
   return str;
+}
+
+char * strlindex (char * str, char * search) {
+  int i = -1, l = strsize(str), j = 0, sl = strsize(search);
+  while (l > i++) {
+    if (str[i] == search[j]) {
+      if (sl == j + 1) {
+        return i - j;
+      }
+      j++;
+      continue;
+    }
+    j = 0;
+  }
+  return -1;
+}
+
+char * strrindex (char * str, char * search) {
+  int i = strsize(str), j = strsize(search);
+  while (0 < i--) {
+    if (str[i] == search[j]) {
+      if (0 == j - 1) {
+        return i;
+      }
+      j--;
+      continue;
+    }
+    j = strsize(search);
+  }
+  return -1;
 }

@@ -104,6 +104,16 @@ void test_rtrim() {
   free(str);
 }
 
+void test_trim() {
+  char * str = " a ";
+  int size = strsize(str);
+  str = trim(str, & size);
+  assert(str[0] == 'a');
+  assert(str[1] == 0);
+  assert(size == 1);
+  free(str);
+}
+
 void test_rsubstr() {
   char * str = string();
   str = concat_str(str, "abc");
@@ -148,6 +158,32 @@ void test_substr() {
 void test_i2s() {
   assert(strequals(i2s(42), "42") == 0);
   assert(strequals(i2s(-42), "-42") == 0);
+}
+
+void test_strswap() {
+  char * str = "Hello World";
+  str = strswap(str, 0, 6);
+  assert(strequals(str, "Wello Horld") == 0);
+}
+
+void test_strreverse() {
+  char * str = "Hello World";
+  str = strreverse(str);
+  assert(strequals(str, "dlroW olleH") == 0);
+}
+
+void test_strlindex() {
+  char * str = "Hello World";
+  char * search = "World";
+  char * index = strindex(str, search);
+  assert(index == 6);
+}
+
+void test_strrindex() {
+  char * str = "Hello World World";
+  char * search = "World";
+  char * index = strrindex(str, search);
+  assert(index == 12);
 }
 
 int main() {
