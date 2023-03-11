@@ -1,3 +1,5 @@
+#include "strings.c"
+#include "bytestrings.c"
 #include "uuencode.c"
 
 #include <assert.h>

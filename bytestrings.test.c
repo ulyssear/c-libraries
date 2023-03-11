@@ -1,3 +1,4 @@
+#include "strings.c"
 #include "bytestrings.c"
 
 #include <assert.h>

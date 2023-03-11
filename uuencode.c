@@ -1,5 +1,3 @@
-#include "bytestrings.c"
-
 char * uuencode(char * str) {
   int len = strsize(str);
   char * out = malloc(len * 2);

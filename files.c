@@ -1,5 +1,3 @@
-#include "strings.c"
-
 char * fileread(char * filename, int * size) {
   FILE * file;
   file = fopen(filename, "r");

@@ -1,5 +1,3 @@
-#include "strings.c"
-
 char * int2bs(int i) {
   char * bs = string();
   int j = 0;

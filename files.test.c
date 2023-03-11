@@ -1,5 +1,6 @@
 #include <assert.h>
 
+#include "strings.c"
 #include "files.c"
 
 void test_fileread() {
