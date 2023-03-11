@@ -224,8 +224,8 @@ char * strswap(char * str, int a, int b) {
   return str;
 }
 
-char * strreverse(char * str, int * size) {
-  int i = -1, l = * size;
+char * strreverse(char * str) {
+  int i = -1, l = strsize(str);
   while (l - 1 > i++) {
     str = strswap(str, i, l - 1 - i);
   }
